@@ -107,12 +107,12 @@ def run_clip_query(query_string, search_depth:int = 25):
 	clip_model, _, clip_tokenizer = load_clip_model()
 	inputs = clip_tokenizer([query_string], padding=True,return_tensors="pt")
 	text_features = clip_model.get_text_features(**inputs).detach().numpy().flatten()
-	select_statement = f"SELECT file_path FROM files ORDER BY clip_embedding <-> %s LIMIT {search_depth}"
+	select_statement = f"SELECT (clip_embedding <#> %s) AS similarity, file_path FROM files ORDER BY similarity LIMIT {search_depth}"
 	cursor = connection.cursor()
 	cursor.execute(select_statement, (text_features, ))
 	results = cursor.fetchall()
 	for i, r in enumerate(results):
-		print(f"{i}: {r[0]}")
+		print(f"{i}: {r[1]}")
 	return results
 
 def cli():
