@@ -95,9 +95,6 @@ def ingest(root: Path):
 			with Image.open(file) as img:
 				inputs = clip_processor(images=[img], return_tensors="pt")
 				image_features = clip_model.get_image_features(**inputs).detach().numpy().flatten()
-				print(f"image_features: {image_features}")
-				print(f"image_features.shape: {image_features.shape}")
-				print(f"type(image_features): {type(image_features)}")
 			insert_statement = """INSERT INTO files (file_path, sha3_hash, clip_embedding) VALUES (%s, %s, %s);"""
 			values = (str(file), file_hash, image_features)
 			cursor.execute(insert_statement, values)
@@ -118,8 +115,6 @@ def run_clip_query(query_string, search_depth:int = 25):
 	for i, r in enumerate(results):
 		print(f"{i}: {r[0]}")
 	return results
-
-
 
 def cli():
 	parser = argparse.ArgumentParser()
