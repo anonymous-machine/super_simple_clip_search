@@ -19,5 +19,5 @@ python run.py --root <path to files>
 After that's done, you can search with CLIP:
 
 ```
-python run.py --search "<search string>" [--search_depth <integer search depth>]
+python run.py --search "<search string>"
 ```
