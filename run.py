@@ -88,7 +88,6 @@ def ingest(root: Path):
 			select_statement = f"SELECT * FROM files WHERE sha3_hash LIKE '{file_hash}'"
 			cursor.execute(select_statement)
 			results = cursor.fetchall()
-			tqdm.write(str(len(results)))
 			if len(results) > 0:
 				tqdm.write("{file} already in database, continuing")
 				continue
